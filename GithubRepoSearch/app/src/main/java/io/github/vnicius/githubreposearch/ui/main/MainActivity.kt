@@ -1,12 +1,16 @@
 package io.github.vnicius.githubreposearch.ui.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import io.github.vnicius.githubreposearch.R
+import androidx.appcompat.app.AppCompatActivity
+import io.github.vnicius.githubreposearch.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var viewBinding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        viewBinding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(viewBinding.root)
     }
 }

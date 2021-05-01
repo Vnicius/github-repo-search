@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_graph"
+    app:startDestination="@id/repoSearchFragment">
+
+    <fragment
+        android:id="@+id/repoSearchFragment"
+        android:name="io.github.vnicius.githubreposearch.ui.reposearch.RepoSearchFragment"
+        android:label="RepoSearchFragment" />
+</navigation>
