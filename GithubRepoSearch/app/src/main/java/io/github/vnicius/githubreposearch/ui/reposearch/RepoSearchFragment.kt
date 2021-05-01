@@ -13,6 +13,10 @@ import io.github.vnicius.githubreposearch.databinding.FragmentRepoSearchBinding
  * github: @vnicius
  * vinicius.matheus252@gmail.com
  */
+
+/**
+ * Fragment responsável por buscar os repositórios no servidor e apresentar o resultado da busca
+ */
 class RepoSearchFragment : Fragment() {
 
     private lateinit var viewBinding: FragmentRepoSearchBinding
