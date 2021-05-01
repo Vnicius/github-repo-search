@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="colorSplashScreenBackground" format="color" />
     <attr name="splashScreenLogo" format="reference" />
+    <attr name="colorPrimaryBackground" format="color" />
+    <attr name="colorSecondaryBackground" format="color" />
+    <attr name="colorPrimaryText" format="color" />
+    <attr name="colorHintText" format="color" />
+
+    <declare-styleable name="CustomTheme">
+        <attr name="searchBarStyle" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="SearchBarView">
+        <attr name="drawableStartCompat" />
+        <attr name="drawableEndCompat" />
+    </declare-styleable>
 </resources>
