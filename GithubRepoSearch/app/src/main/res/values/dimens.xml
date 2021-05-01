@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- region spacing  -->
+    <dimen name="spacing_large">24dp</dimen>
+    <dimen name="spacing_normal">16dp</dimen>
+    <dimen name="spacing_small">8dp</dimen>
+    <dimen name="spacing_tiny">4dp</dimen>
+    <!--  endregion  -->
+
+    <!--  region text size  -->
+    <dimen name="text_size_normal">20sp</dimen>
+    <!--  endregion  -->
+</resources>
