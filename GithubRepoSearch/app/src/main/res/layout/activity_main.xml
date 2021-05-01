@@ -7,22 +7,16 @@
     android:background="?colorPrimaryBackground"
     tools:context=".ui.main.MainActivity">
 
-    <FrameLayout
-        android:id="@+id/search_bar_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?colorSecondaryBackground"
-        android:foregroundGravity="center"
-        android:paddingHorizontal="@dimen/spacing_large"
-        android:paddingVertical="@dimen/spacing_small"
-        app:layout_constraintEnd_toEndOf="parent"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <io.github.vnicius.githubreposearch.ui.common.SearchBarView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/search_repo_hint" />
-    </FrameLayout>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:defaultNavHost="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:navGraph="@navigation/main_graph" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
