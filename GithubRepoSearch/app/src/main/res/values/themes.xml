@@ -13,5 +13,13 @@
         <item name="android:statusBarColor" tools:targetApi="l">@color/engineer_black</item>
         <item name="android:navigationBarColor">@color/black</item>
         <!-- Customize your theme here. -->
+        <item name="colorSplashScreenBackground">@color/engineer_black</item>
+        <item name="splashScreenLogo">@drawable/ic_splash_logo</item>
+    </style>
+
+    <style name="Theme.SplashScreen" parent="Theme.GithubRepoSearch">
+        <item name="android:statusBarColor" tools:targetApi="l">@color/engineer_black</item>
+        <item name="android:navigationBarColor">@color/engineer_black</item>
+        <item name="android:windowBackground">@drawable/background_splash_screen</item>
     </style>
 </resources>
