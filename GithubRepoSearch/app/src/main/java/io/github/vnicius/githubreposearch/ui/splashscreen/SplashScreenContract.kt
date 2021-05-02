@@ -1,5 +1,6 @@
 package io.github.vnicius.githubreposearch.ui.splashscreen
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 
 
@@ -15,6 +16,9 @@ interface SplashScreenContract {
      * ViewModel da SplashScreen
      */
     abstract class SplashScreenViewModel : ViewModel() {
+
+        abstract fun loadLanguagesData(context: Context)
+
         /**
          * Lida com a finalização do carregamento da SplashScreen
          */

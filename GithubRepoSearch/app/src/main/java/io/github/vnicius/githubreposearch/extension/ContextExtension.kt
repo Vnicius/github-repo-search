@@ -2,6 +2,7 @@ package io.github.vnicius.githubreposearch.extension
 
 import android.content.Context
 import android.util.TypedValue
+import androidx.annotation.ColorInt
 import androidx.annotation.StyleRes
 
 
@@ -12,6 +13,15 @@ import androidx.annotation.StyleRes
  */
 @StyleRes
 fun Context.getStyleFromAttr(resId: Int): Int {
+    val typedValue = TypedValue()
+
+    theme.resolveAttribute(resId, typedValue, true)
+
+    return typedValue.data
+}
+
+@ColorInt
+fun Context.getColorFromAttr(resId: Int): Int {
     val typedValue = TypedValue()
 
     theme.resolveAttribute(resId, typedValue, true)

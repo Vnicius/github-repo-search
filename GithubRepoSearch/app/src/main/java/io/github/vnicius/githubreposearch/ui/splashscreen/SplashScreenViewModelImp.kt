@@ -1,5 +1,8 @@
 package io.github.vnicius.githubreposearch.ui.splashscreen
 
+import android.content.Context
+import io.github.vnicius.githubreposearch.util.LanguageProvider
+
 
 /**
  * Created by @vnicius on 5/1/21.
@@ -14,6 +17,10 @@ package io.github.vnicius.githubreposearch.ui.splashscreen
  */
 class SplashScreenViewModelImp(private val splashScreenRouter: SplashScreenContract.SplashScreenRouter) :
     SplashScreenContract.SplashScreenViewModel() {
+
+    override fun loadLanguagesData(context: Context) {
+        LanguageProvider.load(context.applicationContext)
+    }
 
     override fun onLoadFinished() {
         splashScreenRouter.goToMainScreen()

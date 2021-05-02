@@ -5,6 +5,7 @@
     <attr name="colorSecondaryBackground" format="color" />
     <attr name="colorPrimaryText" format="color" />
     <attr name="colorHintText" format="color" />
+    <attr name="colorUnknownLanguageText" format="color" />
 
     <declare-styleable name="CustomTheme">
         <attr name="searchBarStyle" format="reference" />

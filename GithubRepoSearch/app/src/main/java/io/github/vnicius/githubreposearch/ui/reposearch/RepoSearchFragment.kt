@@ -29,4 +29,8 @@ class RepoSearchFragment : Fragment() {
         viewBinding = FragmentRepoSearchBinding.inflate(inflater, container, false)
         return viewBinding.root
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+    }
 }

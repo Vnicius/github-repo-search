@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'androidx.navigation.safeargs.kotlin'
+    id 'kotlinx-serialization'
 }
 
 android {
@@ -47,10 +48,21 @@ dependencies {
     // Android ktx
     implementation 'androidx.core:core-ktx:1.3.2'
     implementation "androidx.fragment:fragment-ktx:1.3.3"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"
 
     // Android Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
+    // Kotlin Coroutines
+    def coroutine_version = "1.5.0-RC"
+
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
+
+    // Kotlin serialization
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.0"
+    implementation "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0"
 
     // Airbnb Paris
     def airbnb_paris_version = "1.7.3"
@@ -58,6 +70,8 @@ dependencies {
     implementation "com.airbnb.android:paris:$airbnb_paris_version"
     kapt "com.airbnb.android:paris-processor:$airbnb_paris_version"
 
+    // Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
