@@ -11,16 +11,18 @@
         <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/engineer_black</item>
-        <item name="android:navigationBarColor">@color/black</item>
+        <item name="android:navigationBarColor">@color/engineer_black</item>
         <!-- Customize your theme here. -->
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
-        <item name="splashScreenLogo">@drawable/ic_splash_logo</item>
+        <item name="appLogo">@drawable/ic_splash_logo</item>
         <item name="searchBarStyle">@style/SearchBarStyle</item>
         <item name="colorPrimaryBackground">@color/black</item>
         <item name="colorSecondaryBackground">@color/engineer_black</item>
         <item name="colorPrimaryText">@color/white</item>
         <item name="colorHintText">@color/aged_grey</item>
         <item name="colorUnknownLanguageText">@color/charcoal</item>
+        <item name="colorBottomNavItemSelected">@color/white</item>
+        <item name="colorBottomNavItemUnselected">@color/devil_grey</item>
     </style>
 
     <!--  region SplashScreen theme  -->
@@ -52,6 +54,14 @@
 
     <style name="Text.Primary">
         <item name="android:textColor">?colorPrimaryText</item>
+    </style>
+
+    <style name="Text.Primary.Big">
+        <item name="android:textSize">@dimen/text_size_big</item>
+    </style>
+
+    <style name="Text.Primary.Big.Bold">
+        <item name="android:textStyle">bold</item>
     </style>
     <!--  endregion  -->
 </resources>

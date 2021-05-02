@@ -3,6 +3,6 @@
     <item android:drawable="?colorSecondaryBackground" />
 
     <item
-        android:drawable="?splashScreenLogo"
+        android:drawable="?appLogo"
         android:gravity="center" />
 </layer-list>

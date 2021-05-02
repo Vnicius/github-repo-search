@@ -1,4 +1,6 @@
 <resources>
-    <string name="app_name">Github Repo Search</string>
+    <string name="app_name">Github Repo App</string>
     <string name="search_repo_hint">Buscar repositório</string>
+    <string name="search">Buscar</string>
+    <string name="about">Sobre</string>
 </resources>
