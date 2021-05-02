@@ -20,6 +20,7 @@
         <item name="colorSecondaryBackground">@color/engineer_black</item>
         <item name="colorPrimaryText">@color/white</item>
         <item name="colorHintText">@color/aged_grey</item>
+        <item name="colorUnknownLanguageText">@color/charcoal</item>
     </style>
 
     <!--  region SplashScreen theme  -->
