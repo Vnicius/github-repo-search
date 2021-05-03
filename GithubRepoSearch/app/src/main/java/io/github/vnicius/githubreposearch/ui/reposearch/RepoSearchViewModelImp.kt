@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
  * github: @vnicius
  * vinicius.matheus252@gmail.com
  */
-class RepoSearchViewModalImp(private val repoRepository: RepoRepository) :
+class RepoSearchViewModelImp(private val repoRepository: RepoRepository) :
     RepoSearchContract.RepoSearchViewModel() {
 
     private val mutableSearchResult = MutableLiveData<RepoSearchResult?>()

@@ -35,7 +35,7 @@ class RepoSearchFragment : Fragment() {
     private lateinit var viewBinding: FragmentRepoSearchBinding
 
     private val viewModel: RepoSearchContract.RepoSearchViewModel by viewModels {
-        RepoSearchViewModelFactor(
+        RepoSearchViewModelFactory(
             RepoRepositoryImp(RepoRemoteDataSourceImp(GithubRepoService()))
         )
     }

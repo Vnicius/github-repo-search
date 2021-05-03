@@ -10,12 +10,12 @@ import io.github.vnicius.githubreposearch.data.repository.repo.RepoRepository
  * github: @vnicius
  * vinicius.matheus252@gmail.com
  */
-class RepoSearchViewModelFactor(private val repoRepository: RepoRepository) :
+class RepoSearchViewModelFactory(private val repoRepository: RepoRepository) :
     ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return if (modelClass == RepoSearchContract.RepoSearchViewModel::class.java) {
-            RepoSearchViewModalImp(repoRepository) as T
+            RepoSearchViewModelImp(repoRepository) as T
         } else {
             super.create(modelClass)
         }
