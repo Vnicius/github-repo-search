@@ -23,6 +23,10 @@
         <item name="colorUnknownLanguageText">@color/charcoal</item>
         <item name="colorBottomNavItemSelected">@color/white</item>
         <item name="colorBottomNavItemUnselected">@color/devil_grey</item>
+        <item name="textFontRegular">@font/roboto_regular</item>
+        <item name="textFontMedium">@font/roboto_medium</item>
+        <item name="colorBodyText">@color/before_grey</item>
+        <item name="colorTextStars">@color/mango</item>
     </style>
 
     <!--  region SplashScreen theme  -->
@@ -49,11 +53,24 @@
 
     <!--  region Text Styles  -->
     <style name="Text">
+        <item name="fontFamily">?textFontRegular</item>
         <item name="android:textSize">@dimen/text_size_normal</item>
     </style>
 
     <style name="Text.Primary">
         <item name="android:textColor">?colorPrimaryText</item>
+    </style>
+
+    <style name="Text.Primary.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Text.Primary.Small">
+        <item name="android:textSize">@dimen/text_size_small</item>
+    </style>
+
+    <style name="Text.Primary.Small.Medium">
+        <item name="fontFamily">?textFontMedium</item>
     </style>
 
     <style name="Text.Primary.Big">
@@ -62,6 +79,14 @@
 
     <style name="Text.Primary.Big.Bold">
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Text.Body">
+        <item name="android:textColor">?colorBodyText</item>
+    </style>
+
+    <style name="Text.Body.Small">
+        <item name="android:textSize">@dimen/text_size_small</item>
     </style>
     <!--  endregion  -->
 </resources>

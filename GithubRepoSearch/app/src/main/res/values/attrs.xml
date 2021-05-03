@@ -4,10 +4,14 @@
     <attr name="colorPrimaryBackground" format="color" />
     <attr name="colorSecondaryBackground" format="color" />
     <attr name="colorPrimaryText" format="color" />
+    <attr name="colorBodyText" format="color" />
     <attr name="colorHintText" format="color" />
     <attr name="colorUnknownLanguageText" format="color" />
     <attr name="colorBottomNavItemSelected" format="color" />
     <attr name="colorBottomNavItemUnselected" format="color" />
+    <attr name="textFontRegular" format="reference" />
+    <attr name="textFontMedium" format="reference" />
+    <attr name="colorTextStars" format="color" />
 
     <declare-styleable name="CustomTheme">
         <attr name="searchBarStyle" format="reference" />

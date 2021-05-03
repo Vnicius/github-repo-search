@@ -2,10 +2,9 @@ package io.github.vnicius.githubreposearch.ui.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupWithNavController
 import io.github.vnicius.githubreposearch.R
 import io.github.vnicius.githubreposearch.databinding.ActivityMainBinding
+import io.github.vnicius.githubreposearch.extension.setupWithNavController
 
 class MainActivity : AppCompatActivity() {
 
@@ -16,12 +15,23 @@ class MainActivity : AppCompatActivity() {
         viewBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
 
+        if (savedInstanceState == null) {
+            setupBottomNav()
+        }
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+
         setupBottomNav()
     }
 
     private fun setupBottomNav() {
-        (supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as? NavHostFragment)?.let {
-            viewBinding.bottomNavigation.setupWithNavController(it.navController)
-        }
+        viewBinding.bottomNavigation.setupWithNavController(
+            navGraphIds = listOf(R.navigation.home_graph, R.navigation.about_graph),
+            fragmentManager = supportFragmentManager,
+            containerId = R.id.nav_host_fragment,
+            intent = intent
+        )
     }
 }
