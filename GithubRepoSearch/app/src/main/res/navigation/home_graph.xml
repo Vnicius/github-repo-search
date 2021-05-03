@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/main_graph"
-    app:startDestination="@id/search">
+    android:id="@+id/search"
+    app:startDestination="@id/searchFragment">
 
     <fragment
-        android:id="@+id/search"
+        android:id="@+id/searchFragment"
         android:name="io.github.vnicius.githubreposearch.ui.reposearch.RepoSearchFragment"
         android:label="RepoSearchFragment" />
-    <fragment
-        android:id="@+id/about"
-        android:name="io.github.vnicius.githubreposearch.ui.about.AboutFragment"
-        android:label="AboutFragment" />
 </navigation>

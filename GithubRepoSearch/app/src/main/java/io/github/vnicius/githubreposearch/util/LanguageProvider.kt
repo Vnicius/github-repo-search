@@ -1,11 +1,12 @@
 package io.github.vnicius.githubreposearch.util
 
 import android.content.Context
-import io.github.vnicius.githubreposearch.R
+import android.graphics.Color
+import androidx.annotation.ColorInt
+import androidx.core.graphics.toColorInt
 import io.github.vnicius.githubreposearch.data.model.Language
+import io.github.vnicius.githubreposearch.data.model.LanguageWrapper
 import io.github.vnicius.githubreposearch.extension.geContentFromFile
-import io.github.vnicius.githubreposearch.extension.getColorFromAttr
-import io.github.vnicius.githubreposearch.extension.toHexColor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -23,20 +24,21 @@ object LanguageProvider {
 
     private const val COLORS_JSON_FILE_NAME = "colors.json"
     private var languages: List<Language> = listOf()
-    private var unknownLanguageColorHex: String = "#FFF"
+
+    @ColorInt
+    private var unknownLanguageColor: Int = Color.WHITE
     private val languageProviderScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     fun load(context: Context) {
         languageProviderScope.launch {
             context.assets?.geContentFromFile(COLORS_JSON_FILE_NAME)?.let { content ->
-                languages = Json.decodeFromString(content)
+                val languagesWrappers: List<LanguageWrapper> = Json.decodeFromString(content)
+                languages = languagesWrappers.map { Language(it.name, it.color.toColorInt()) }
             }
-            unknownLanguageColorHex =
-                context.getColorFromAttr(R.attr.colorUnknownLanguageText).toHexColor()
         }
     }
 
     fun resolveName(name: String): Language =
-        languages.firstOrNull { it.name.equals(name, ignoreCase = true) }
-            ?: Language(name, unknownLanguageColorHex)
+        languages.firstOrNull { it.name.equals(name, ignoreCase = true) && it.color != Color.BLACK }
+            ?: Language(name, unknownLanguageColor)
 }
