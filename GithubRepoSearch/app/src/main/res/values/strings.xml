@@ -3,4 +3,7 @@
     <string name="search_repo_hint">Buscar repositório</string>
     <string name="search">Buscar</string>
     <string name="about">Sobre</string>
+    <string name="empty_search">Tente buscar por algum repositório</string>
+    <string name="search_no_result_message">Nenhum repositorório encontrado</string>
+    <string name="search_error_message">Desculpe! Ocorreu algum erro</string>
 </resources>

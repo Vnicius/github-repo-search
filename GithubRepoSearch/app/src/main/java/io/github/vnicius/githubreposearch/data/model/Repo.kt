@@ -17,10 +17,10 @@ data class Repo(
     val fullName: String,
     val owner: RepoOwner,
     @SerialName("html_url")
-    val url: String,
-    val description: String,
+    val url: String?,
+    val description: String?,
     @Serializable(with = LanguageProviderSerializer::class)
-    val language: Language,
+    val language: Language?,
     @SerialName("stargazers_count")
     val starsCount: Int
 )

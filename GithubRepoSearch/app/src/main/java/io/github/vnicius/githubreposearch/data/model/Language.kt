@@ -17,7 +17,7 @@ import kotlinx.serialization.encoding.Encoder
  * vinicius.matheus252@gmail.com
  */
 @Serializable
-data class Language(val name: String, @ColorInt val color: Int)
+data class Language(val name: String, @ColorInt val color: Int?)
 
 object LanguageProviderSerializer : KSerializer<Language> {
     override val descriptor: SerialDescriptor =

@@ -70,7 +70,7 @@ class SearchBarView @JvmOverloads constructor(
     @SuppressLint("ClickableViewAccessibility")
     private fun setupDrawablesClick() {
         setOnTouchListener { _, event ->
-            if (event.action == MotionEvent.ACTION_UP) {
+            if (event.action == MotionEvent.ACTION_DOWN) {
                 val xPosition = event.rawX
 
                 startCompoundDrawable?.bounds?.width()?.let { startDrawableWidth ->

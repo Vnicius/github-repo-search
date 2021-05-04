@@ -27,6 +27,10 @@
         <item name="textFontMedium">@font/roboto_medium</item>
         <item name="colorBodyText">@color/before_grey</item>
         <item name="colorTextStars">@color/mango</item>
+        <item name="colorSecondaryText">@color/devil_grey</item>
+        <item name="emptySearchIcon">@drawable/ic_idle_search</item>
+        <item name="noResultsSearchIcon">@drawable/ic_search_no_result</item>
+        <item name="errorSearchIcon">@drawable/ic_search_error</item>
     </style>
 
     <!--  region SplashScreen theme  -->
@@ -79,6 +83,14 @@
 
     <style name="Text.Primary.Big.Bold">
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Text.Secondary">
+        <item name="android:textColor">?colorSecondaryText</item>
+    </style>
+
+    <style name="Text.Secondary.Medium">
+        <item name="android:textSize">@dimen/text_size_medium</item>
     </style>
 
     <style name="Text.Body">

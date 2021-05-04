@@ -10,9 +10,11 @@
     <!--  region text size  -->
     <dimen name="text_size_big">32sp</dimen>
     <dimen name="text_size_normal">20sp</dimen>
+    <dimen name="text_size_medium">18sp</dimen>
     <dimen name="text_size_small">16sp</dimen>
     <!--  endregion  -->
 
     <dimen name="owner_avatar_size">50dp</dimen>
     <dimen name="language_icon_size">12dp</dimen>
+    <dimen name="spinner_size">50dp</dimen>
 </resources>

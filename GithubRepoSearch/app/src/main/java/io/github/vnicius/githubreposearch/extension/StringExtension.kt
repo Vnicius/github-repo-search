@@ -16,3 +16,10 @@ fun String.toMediaType(): MediaType = MediaType.get(this)
 fun <T> String.fromJson(serializer: KSerializer<T>): T {
     return Json.decodeFromString(serializer, this)
 }
+
+fun String.isEquallyTo(otherString: String?): Boolean =
+    if (otherString == null) {
+        this == otherString
+    } else {
+        this.trim().equals(otherString.trim(), ignoreCase = true)
+    }

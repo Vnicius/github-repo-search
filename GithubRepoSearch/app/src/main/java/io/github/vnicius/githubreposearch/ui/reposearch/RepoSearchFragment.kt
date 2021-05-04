@@ -1,23 +1,26 @@
 package io.github.vnicius.githubreposearch.ui.reposearch
 
-import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
+import androidx.core.view.children
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import io.github.vnicius.githubreposearch.R
+import io.github.vnicius.githubreposearch.data.model.NetworkState
 import io.github.vnicius.githubreposearch.data.model.Repo
 import io.github.vnicius.githubreposearch.data.model.RepoSearchResult
 import io.github.vnicius.githubreposearch.data.repository.repo.RepoRemoteDataSourceImp
 import io.github.vnicius.githubreposearch.data.repository.repo.RepoRepositoryImp
 import io.github.vnicius.githubreposearch.data.service.repo.GithubRepoService
 import io.github.vnicius.githubreposearch.databinding.FragmentRepoSearchBinding
+import io.github.vnicius.githubreposearch.extension.getDrawableFromAttr
+import io.github.vnicius.githubreposearch.extension.hideKeyboard
 import io.github.vnicius.githubreposearch.extension.setDivider
 
 
@@ -39,6 +42,8 @@ class RepoSearchFragment : Fragment() {
             RepoRepositoryImp(RepoRemoteDataSourceImp(GithubRepoService()))
         )
     }
+    private val repoAdapter: RepoAdapter?
+        get() = viewBinding.searchResultList.adapter as? RepoAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,11 +57,13 @@ class RepoSearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        showSearchIdle()
         setupSearchTextChange()
         setupSearchResultObserver()
         setupEditTextIMESearch()
         setupSearchBarButtonsListeners()
         setupSearchResultRecyclerView()
+        setupSearchState()
     }
 
     // region Setup
@@ -91,6 +98,7 @@ class RepoSearchFragment : Fragment() {
                 handleEditableText(viewBinding.searchBar.text, true)
             }
             setOnCancelButtonClickedListener {
+                clearSearch()
                 cancelSearch()
             }
         }
@@ -100,6 +108,31 @@ class RepoSearchFragment : Fragment() {
         viewBinding.searchResultList.apply {
             adapter = RepoAdapter()
             setDivider(R.drawable.list_item_divider)
+        }
+    }
+
+    private fun setupSearchState() {
+        viewModel.searchState.observe(viewLifecycleOwner, { state ->
+            when (state) {
+                NetworkState.Idle -> {
+                    clearSearchResult()
+                    showSearchIdle()
+                }
+                NetworkState.Loading -> {
+                    clearSearchResult()
+                    showSearchLoading()
+                }
+                is NetworkState.Failed -> {
+                    clearSearchResult()
+                    showSearchError()
+                }
+            }
+        })
+    }
+
+    private fun setupSearchContentFocus(childId: Int) {
+        viewBinding.searchContentContainer.children.forEach { child ->
+            child.isVisible = child.id == childId
         }
     }
 
@@ -114,6 +147,8 @@ class RepoSearchFragment : Fragment() {
     private fun handleSearchQuery(query: String, isForced: Boolean = false) {
         if (query.isNotBlank()) {
             performSearch(query, isForced)
+        } else {
+            cancelSearch()
         }
 
         if (isForced) {
@@ -126,23 +161,69 @@ class RepoSearchFragment : Fragment() {
     }
 
     private fun closeKeyboard() {
-        (activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)?.let {
-            it.hideSoftInputFromWindow(viewBinding.searchBar.windowToken, 0)
-        }
+        context?.hideKeyboard(viewBinding.searchBar)
     }
 
     private fun cancelSearch() {
-        viewBinding.searchBar.text = null
         viewModel.resetSearch()
+        clearSearchResult()
+    }
+
+    private fun clearSearch() {
+        viewBinding.searchBar.text = null
     }
 
     private fun handleSearchResult(repoSearchResult: RepoSearchResult?) {
         repoSearchResult?.let { repoSearchResult ->
             onSearchResultChanged(repoSearchResult.result.items)
+
+            if (repoSearchResult.result.items.isEmpty()) {
+                showSearchNoResult()
+            } else {
+                showSearchResult()
+            }
         }
     }
 
     private fun onSearchResultChanged(repos: List<Repo>) {
-        (viewBinding.searchResultList.adapter as? RepoAdapter)?.submitList(repos)
+        repoAdapter?.submitList(repos)
+    }
+
+    private fun showSearchError() {
+        viewBinding.searchStateMessage.apply {
+            setIcon(context.getDrawableFromAttr(R.attr.errorSearchIcon))
+            setMessageRes(R.string.search_error_message)
+            setupSearchContentFocus(this.id)
+        }
+    }
+
+    private fun showSearchIdle() {
+        viewBinding.searchStateMessage.apply {
+            setIcon(context?.getDrawableFromAttr(R.attr.emptySearchIcon))
+            setMessageRes(R.string.empty_search)
+            setupSearchContentFocus(this.id)
+        }
+    }
+
+    private fun showSearchLoading() {
+        setupSearchContentFocus(viewBinding.spinner.id)
+    }
+
+    private fun showSearchResult() {
+        setupSearchContentFocus(viewBinding.searchResultList.id)
+    }
+
+    private fun showSearchNoResult() {
+        viewBinding.searchStateMessage.apply {
+            setIcon(context?.getDrawableFromAttr(R.attr.noResultsSearchIcon))
+            setMessageRes(R.string.search_no_result_message)
+            setupSearchContentFocus(this.id)
+        }
+    }
+
+    private fun clearSearchResult() {
+        view?.post {
+            repoAdapter?.submitList(null)
+        }
     }
 }

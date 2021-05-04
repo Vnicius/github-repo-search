@@ -1,6 +1,8 @@
 package io.github.vnicius.githubreposearch.data.repository.repo
 
+import io.github.vnicius.githubreposearch.data.model.NetworkState
 import io.github.vnicius.githubreposearch.data.model.RepoSearchResult
+import kotlinx.coroutines.flow.Flow
 
 
 /**
@@ -13,10 +15,12 @@ import io.github.vnicius.githubreposearch.data.model.RepoSearchResult
  * Repositório para acesso ao model Repo e relacionados
  */
 interface RepoRepository {
+    val searchState: Flow<NetworkState>
+
     /**
      * Realiza a busca de repositórios basedo numa query
      *
      * @param query - query da busca
      */
-    suspend fun search(query: String): RepoSearchResult
+    suspend fun search(query: String): RepoSearchResult?
 }
