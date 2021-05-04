@@ -8,6 +8,7 @@ import io.github.vnicius.githubreposearch.data.model.Repo
 import io.github.vnicius.githubreposearch.data.model.RepoSearchResult
 import io.github.vnicius.githubreposearch.data.repository.repo.RepoRepository
 import io.github.vnicius.githubreposearch.extension.isEquallyTo
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
@@ -72,7 +73,10 @@ class RepoSearchViewModelImp(private val repoRepository: RepoRepository) :
     private fun setupSearchStateListener() {
         viewModelScope.launch {
             repoRepository.searchState.collect {
-                mutableSearchState.postValue(it)
+                // Ignorar error por cancelamento do Job
+                if (it !is CancellationException) {
+                    mutableSearchState.postValue(it)
+                }
             }
         }
     }
