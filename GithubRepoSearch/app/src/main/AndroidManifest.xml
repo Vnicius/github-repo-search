@@ -13,15 +13,18 @@
         android:theme="@style/Theme.GithubRepoSearch">
         <activity
             android:name=".ui.splashscreen.SplashScreenActivity"
-            android:theme="@style/Theme.SplashScreen"
+            android:noHistory="true"
             android:screenOrientation="portrait"
-            android:noHistory="true">
+            android:theme="@style/Theme.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.main.MainActivity"></activity>
+        <activity
+            android:name=".ui.main.MainActivity"
+            android:theme="@style/Theme.GithubRepoSearch"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustNothing" />
     </application>
 
 </manifest>

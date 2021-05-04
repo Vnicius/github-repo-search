@@ -1,7 +1,12 @@
 package io.github.vnicius.githubreposearch.data.repository.repo
 
+import android.util.Log
+import io.github.vnicius.githubreposearch.data.model.NetworkState
 import io.github.vnicius.githubreposearch.data.model.RepoSearchResult
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.withContext
 
 
@@ -11,7 +16,28 @@ import kotlinx.coroutines.withContext
  * vinicius.matheus252@gmail.com
  */
 class RepoRepositoryImp(private val repoRemoteDataSource: RepoRemoteDataSource) : RepoRepository {
-    override suspend fun search(query: String): RepoSearchResult = withContext(Dispatchers.IO) {
-        repoRemoteDataSource.search(query)
-    }
+
+    private val mutableSearchState = MutableStateFlow<NetworkState>(NetworkState.Idle)
+
+    override val searchState: Flow<NetworkState> = mutableSearchState
+
+    override suspend fun search(query: String): RepoSearchResult? =
+        withContext(Dispatchers.IO) {
+            try {
+                mutableSearchState.value = NetworkState.Loading
+
+                val result = repoRemoteDataSource.search(query)
+
+                mutableSearchState.value = NetworkState.Loaded
+
+                result
+            } catch (e: Exception) {
+                // Ignorar error por cancelamento do Job
+                if (e !is CancellationException) {
+                    Log.e("networkState", "networkState", e)
+                    mutableSearchState.value = NetworkState.Failed(e)
+                }
+                null
+            }
+        }
 }

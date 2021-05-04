@@ -4,6 +4,7 @@
     <attr name="colorPrimaryBackground" format="color" />
     <attr name="colorSecondaryBackground" format="color" />
     <attr name="colorPrimaryText" format="color" />
+    <attr name="colorSecondaryText" format="color" />
     <attr name="colorBodyText" format="color" />
     <attr name="colorHintText" format="color" />
     <attr name="colorUnknownLanguageText" format="color" />
@@ -12,6 +13,9 @@
     <attr name="textFontRegular" format="reference" />
     <attr name="textFontMedium" format="reference" />
     <attr name="colorTextStars" format="color" />
+    <attr name="emptySearchIcon" format="reference" />
+    <attr name="errorSearchIcon" format="reference" />
+    <attr name="noResultsSearchIcon" format="reference" />
 
     <declare-styleable name="CustomTheme">
         <attr name="searchBarStyle" format="reference" />
@@ -20,5 +24,10 @@
     <declare-styleable name="SearchBarView">
         <attr name="drawableStartCompat" />
         <attr name="drawableEndCompat" />
+    </declare-styleable>
+
+    <declare-styleable name="SearchStateMessageView">
+        <attr name="icon" />
+        <attr name="message" format="string" />
     </declare-styleable>
 </resources>

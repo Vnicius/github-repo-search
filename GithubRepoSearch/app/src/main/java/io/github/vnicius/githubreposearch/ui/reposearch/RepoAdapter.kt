@@ -13,6 +13,7 @@ import coil.transform.CircleCropTransformation
 import io.github.vnicius.githubreposearch.R
 import io.github.vnicius.githubreposearch.data.model.Repo
 import io.github.vnicius.githubreposearch.databinding.ViewRepoItemBinding
+import io.github.vnicius.githubreposearch.extension.getColorFromAttr
 import io.github.vnicius.githubreposearch.extension.getVibrantColor
 import io.github.vnicius.githubreposearch.extension.inflate
 import io.github.vnicius.githubreposearch.extension.toCompact
@@ -50,6 +51,10 @@ class RepoAdapter : RecyclerView.Adapter<RepoAdapter.RepoViewHolder>() {
 
     fun submitList(repos: List<Repo>?) {
         asyncListDiffer.submitList(repos)
+
+        if (repos?.isEmpty() != false) {
+            notifyDataSetChanged()
+        }
     }
 
     class RepoViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -61,20 +66,26 @@ class RepoAdapter : RecyclerView.Adapter<RepoAdapter.RepoViewHolder>() {
             viewBinding.apply {
                 ownerAvatar.load(repo.owner.avatarUrl) {
                     crossfade(true)
+                    placeholder(R.drawable.circle)
                     transformations(
                         CircleCropTransformation(),
                         ImageColorTransformation(::handleAvatarColor)
                     )
                 }
-                handleAvatarColor(ownerAvatar.getVibrantColor())
+                handleAvatarColor(ownerAvatar.getVibrantColor() ?: Color.WHITE)
                 ownerName.text = repo.owner.login
                 repoTitle.text = repo.name
                 description.text = repo.description
                 starCount.text = repo.starsCount.toCompact()
-                languageContainer.isVisible = language.name.isNotBlank()
-                languageName.text = language.name
-                languageName.setTextColor(language.color)
-                languageIcon.setColorFilter(language.color)
+                languageContainer.isVisible = language?.name?.isNotBlank() == true
+                languageName.text = language?.name
+                language?.color.let { color ->
+                    val langColor =
+                        color ?: itemView.context.getColorFromAttr(R.attr.colorUnknownLanguageText)
+
+                    languageName.setTextColor(langColor)
+                    languageIcon.setColorFilter(langColor)
+                }
             }
         }
 

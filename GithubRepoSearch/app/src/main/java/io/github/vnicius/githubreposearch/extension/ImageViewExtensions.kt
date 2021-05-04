@@ -14,5 +14,9 @@ import androidx.palette.graphics.Palette
 
 @ColorInt
 fun ImageView.getVibrantColor(): Int? = drawable?.let {
-    Palette.from(it.toBitmap()).generate().vibrantSwatch?.rgb
+    try {
+        Palette.from(it.toBitmap()).generate().vibrantSwatch?.rgb
+    } catch (e: Exception) {
+        null
+    }
 }
