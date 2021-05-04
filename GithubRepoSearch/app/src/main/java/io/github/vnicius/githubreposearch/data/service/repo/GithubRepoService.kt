@@ -1,7 +1,7 @@
 package io.github.vnicius.githubreposearch.data.service.repo
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import io.github.vnicius.githubreposearch.data.model.RepoSearchResult
+import io.github.vnicius.githubreposearch.data.model.RepoSearchResponse
 import io.github.vnicius.githubreposearch.data.service.GithubAPIConstants
 import io.github.vnicius.githubreposearch.data.service.GithubRetrofitService
 import io.github.vnicius.githubreposearch.extension.toMediaType
@@ -29,9 +29,9 @@ class GithubRepoService : RepoRemoteService {
         .build()
         .create(GithubRetrofitService::class.java)
 
-    override suspend fun search(query: String): RepoSearchResult = withContext(Dispatchers.IO) {
+    override suspend fun search(query: String): RepoSearchResponse = withContext(Dispatchers.IO) {
         val response = githubAPI.searchRepositories(query)
 
-        RepoSearchResult(query, response)
+        response
     }
 }

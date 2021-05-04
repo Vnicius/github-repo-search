@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import io.github.vnicius.githubreposearch.data.model.NetworkState
 import io.github.vnicius.githubreposearch.data.model.Repo
-import io.github.vnicius.githubreposearch.data.model.RepoSearchResult
 
 
 /**
@@ -15,7 +14,7 @@ import io.github.vnicius.githubreposearch.data.model.RepoSearchResult
 interface RepoSearchContract {
 
     abstract class RepoSearchViewModel : ViewModel() {
-        abstract val searchResult: LiveData<RepoSearchResult?>
+        abstract val searchResult: LiveData<List<Repo>?>
         abstract val searchState: LiveData<NetworkState>
 
         abstract fun search(query: String, isPriority: Boolean = false)

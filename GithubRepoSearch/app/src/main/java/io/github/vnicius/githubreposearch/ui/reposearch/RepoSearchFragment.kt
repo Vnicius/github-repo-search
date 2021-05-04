@@ -14,11 +14,11 @@ import androidx.fragment.app.viewModels
 import io.github.vnicius.githubreposearch.R
 import io.github.vnicius.githubreposearch.data.model.NetworkState
 import io.github.vnicius.githubreposearch.data.model.Repo
-import io.github.vnicius.githubreposearch.data.model.RepoSearchResult
 import io.github.vnicius.githubreposearch.data.repository.repo.RepoRemoteDataSourceImp
 import io.github.vnicius.githubreposearch.data.repository.repo.RepoRepositoryImp
 import io.github.vnicius.githubreposearch.data.service.repo.GithubRepoService
 import io.github.vnicius.githubreposearch.databinding.FragmentRepoSearchBinding
+import io.github.vnicius.githubreposearch.exception.NoResultsException
 import io.github.vnicius.githubreposearch.extension.getDrawableFromAttr
 import io.github.vnicius.githubreposearch.extension.hideKeyboard
 import io.github.vnicius.githubreposearch.extension.setDivider
@@ -124,7 +124,12 @@ class RepoSearchFragment : Fragment() {
                 }
                 is NetworkState.Failed -> {
                     clearSearchResult()
-                    showSearchError()
+
+                    if (state.exception is NoResultsException) {
+                        showSearchNoResult()
+                    } else {
+                        showSearchError()
+                    }
                 }
             }
         })
@@ -173,15 +178,10 @@ class RepoSearchFragment : Fragment() {
         viewBinding.searchBar.text = null
     }
 
-    private fun handleSearchResult(repoSearchResult: RepoSearchResult?) {
+    private fun handleSearchResult(repoSearchResult: List<Repo>?) {
         repoSearchResult?.let { repoSearchResult ->
-            onSearchResultChanged(repoSearchResult.result.items)
-
-            if (repoSearchResult.result.items.isEmpty()) {
-                showSearchNoResult()
-            } else {
-                showSearchResult()
-            }
+            onSearchResultChanged(repoSearchResult)
+            showSearchResult()
         }
     }
 
