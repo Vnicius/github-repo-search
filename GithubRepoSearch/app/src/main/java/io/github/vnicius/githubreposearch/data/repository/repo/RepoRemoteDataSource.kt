@@ -1,6 +1,6 @@
 package io.github.vnicius.githubreposearch.data.repository.repo
 
-import io.github.vnicius.githubreposearch.data.model.RepoSearchResult
+import io.github.vnicius.githubreposearch.data.model.RepoSearchResponse
 
 
 /**
@@ -18,5 +18,5 @@ interface RepoRemoteDataSource {
      *
      * @param query - query da busca
      */
-    suspend fun search(query: String): RepoSearchResult
+    suspend fun search(query: String): RepoSearchResponse
 }

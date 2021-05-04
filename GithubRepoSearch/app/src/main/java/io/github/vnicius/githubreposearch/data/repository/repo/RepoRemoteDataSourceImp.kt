@@ -1,6 +1,6 @@
 package io.github.vnicius.githubreposearch.data.repository.repo
 
-import io.github.vnicius.githubreposearch.data.model.RepoSearchResult
+import io.github.vnicius.githubreposearch.data.model.RepoSearchResponse
 import io.github.vnicius.githubreposearch.data.service.repo.RepoRemoteService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -13,7 +13,7 @@ import kotlinx.coroutines.withContext
  */
 class RepoRemoteDataSourceImp(private val repoRemoteService: RepoRemoteService) :
     RepoRemoteDataSource {
-    override suspend fun search(query: String): RepoSearchResult = withContext(Dispatchers.IO) {
+    override suspend fun search(query: String): RepoSearchResponse = withContext(Dispatchers.IO) {
         repoRemoteService.search(query)
     }
 }

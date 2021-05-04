@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import io.github.vnicius.githubreposearch.data.model.NetworkState
 import io.github.vnicius.githubreposearch.data.model.Repo
-import io.github.vnicius.githubreposearch.data.model.RepoSearchResult
 import io.github.vnicius.githubreposearch.data.repository.repo.RepoRepository
 import io.github.vnicius.githubreposearch.extension.isEquallyTo
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
@@ -22,13 +22,13 @@ import kotlinx.coroutines.launch
 class RepoSearchViewModelImp(private val repoRepository: RepoRepository) :
     RepoSearchContract.RepoSearchViewModel() {
 
-    private val mutableSearchResult = MutableLiveData<RepoSearchResult?>()
+    private val mutableSearchResult = MutableLiveData<List<Repo>?>()
     private val mutableSearchState = MutableLiveData<NetworkState>(NetworkState.Idle)
 
     private var currentSearchJob: Job? = null
     private var latestQuery: String = ""
 
-    override val searchResult: LiveData<RepoSearchResult?> = mutableSearchResult
+    override val searchResult: LiveData<List<Repo>?> = mutableSearchResult
     override val searchState: LiveData<NetworkState> = mutableSearchState
 
     init {
@@ -36,7 +36,7 @@ class RepoSearchViewModelImp(private val repoRepository: RepoRepository) :
     }
 
     override fun search(query: String, isPriority: Boolean) {
-        if (query.isEquallyTo(latestQuery) && searchResult.value?.result?.items?.isNotEmpty() == true) return
+        if (query.isEquallyTo(latestQuery) && searchResult.value?.isNotEmpty() == true) return
 
         currentSearchJob?.cancel()
         latestQuery = query
@@ -51,7 +51,7 @@ class RepoSearchViewModelImp(private val repoRepository: RepoRepository) :
             }
 
             repoRepository.search(query)?.let { result ->
-                if (result.query.isEquallyTo(latestQuery)) {
+                if (query.isEquallyTo(latestQuery)) {
                     mutableSearchResult.postValue(result)
                 }
             }
@@ -72,7 +72,10 @@ class RepoSearchViewModelImp(private val repoRepository: RepoRepository) :
     private fun setupSearchStateListener() {
         viewModelScope.launch {
             repoRepository.searchState.collect {
-                mutableSearchState.postValue(it)
+                // Ignorar error por cancelamento do Job
+                if (it !is CancellationException) {
+                    mutableSearchState.postValue(it)
+                }
             }
         }
     }
