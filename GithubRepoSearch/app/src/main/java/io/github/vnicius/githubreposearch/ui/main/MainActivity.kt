@@ -4,7 +4,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import io.github.vnicius.githubreposearch.R
 import io.github.vnicius.githubreposearch.databinding.ActivityMainBinding
-import io.github.vnicius.githubreposearch.extension.setupWithNavController
+import io.github.vnicius.githubreposearch.extension.setupBottomNavigationConfig
+import io.github.vnicius.githubreposearch.navigation.mainBottomNavigationConfig
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,8 +28,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupBottomNav() {
-        viewBinding.bottomNavigation.setupWithNavController(
-            navGraphIds = listOf(R.navigation.home_graph, R.navigation.about_graph),
+        viewBinding.bottomNavigation.setupBottomNavigationConfig(
+            bottomNavigationConfig = mainBottomNavigationConfig,
             fragmentManager = supportFragmentManager,
             containerId = R.id.nav_host_fragment,
             intent = intent
