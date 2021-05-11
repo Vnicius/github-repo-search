@@ -25,7 +25,8 @@ import io.github.vnicius.githubreposearch.util.ImageColorTransformation
  * github: @vnicius
  * vinicius.matheus252@gmail.com
  */
-class RepoAdapter : RecyclerView.Adapter<RepoAdapter.RepoViewHolder>() {
+class RepoAdapter(private val onRepoClicked: (repo: Repo) -> Unit) :
+    RecyclerView.Adapter<RepoAdapter.RepoViewHolder>() {
 
     private val differCallback = object : DiffUtil.ItemCallback<Repo>() {
         override fun areItemsTheSame(oldItem: Repo, newItem: Repo): Boolean =
@@ -37,7 +38,9 @@ class RepoAdapter : RecyclerView.Adapter<RepoAdapter.RepoViewHolder>() {
     private val asyncListDiffer = AsyncListDiffer(this, differCallback)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepoViewHolder =
-        RepoViewHolder(parent.inflate(R.layout.view_repo_item))
+        RepoViewHolder(parent.inflate(R.layout.view_repo_item)) {
+            getItemAt(it)?.let(onRepoClicked)
+        }
 
     override fun onBindViewHolder(holder: RepoViewHolder, position: Int) {
         getItemAt(position)?.let {
@@ -57,8 +60,15 @@ class RepoAdapter : RecyclerView.Adapter<RepoAdapter.RepoViewHolder>() {
         }
     }
 
-    class RepoViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class RepoViewHolder(view: View, onRepoClicked: (position: Int) -> Unit) :
+        RecyclerView.ViewHolder(view) {
         private val viewBinding = ViewRepoItemBinding.bind(itemView)
+
+        init {
+            itemView.setOnClickListener {
+                onRepoClicked(adapterPosition)
+            }
+        }
 
         fun bind(repo: Repo) {
             val language = repo.language

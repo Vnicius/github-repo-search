@@ -1,9 +1,10 @@
 package io.github.vnicius.githubreposearch.ui.reposearch
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
 import io.github.vnicius.githubreposearch.data.model.NetworkState
 import io.github.vnicius.githubreposearch.data.model.Repo
+import io.github.vnicius.githubreposearch.ui.base.BaseContract
+import io.github.vnicius.githubreposearch.ui.base.BaseViewModelTemplate
 
 
 /**
@@ -13,7 +14,7 @@ import io.github.vnicius.githubreposearch.data.model.Repo
  */
 interface RepoSearchContract {
 
-    abstract class RepoSearchViewModel : ViewModel() {
+    abstract class RepoSearchViewModel(router: RepoSearchRouter) : BaseViewModelTemplate(router) {
         abstract val searchResult: LiveData<List<Repo>?>
         abstract val searchState: LiveData<NetworkState>
 
@@ -22,7 +23,7 @@ interface RepoSearchContract {
         abstract fun onRepoSelected(repo: Repo)
     }
 
-    interface RepoSearchRouter {
+    interface RepoSearchRouter : BaseContract.BaseRouter {
         fun goToRepo(repo: Repo)
     }
 }
