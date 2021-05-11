@@ -39,6 +39,7 @@ class RepoSearchFragment : Fragment() {
 
     private val viewModel: RepoSearchContract.RepoSearchViewModel by viewModels {
         RepoSearchViewModelFactory(
+            RepoSearchRouterImp(),
             RepoRepositoryImp(RepoRemoteDataSourceImp(GithubRepoService()))
         )
     }
@@ -64,6 +65,16 @@ class RepoSearchFragment : Fragment() {
         setupSearchBarButtonsListeners()
         setupSearchResultRecyclerView()
         setupSearchState()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.setupWithFragment(this)
+    }
+
+    override fun onDestroy() {
+        viewModel.setupWithFragment(null)
+        super.onDestroy()
     }
 
     // region Setup
@@ -106,7 +117,7 @@ class RepoSearchFragment : Fragment() {
 
     private fun setupSearchResultRecyclerView() {
         viewBinding.searchResultList.apply {
-            adapter = RepoAdapter()
+            adapter = RepoAdapter(::onRepoSelected)
             setDivider(R.drawable.list_item_divider)
         }
     }
@@ -225,5 +236,10 @@ class RepoSearchFragment : Fragment() {
         view?.post {
             repoAdapter?.submitList(null)
         }
+    }
+
+    private fun onRepoSelected(repo: Repo) {
+        closeKeyboard()
+        viewModel.onRepoSelected(repo)
     }
 }

@@ -19,8 +19,11 @@ import kotlinx.coroutines.launch
  * github: @vnicius
  * vinicius.matheus252@gmail.com
  */
-class RepoSearchViewModelImp(private val repoRepository: RepoRepository) :
-    RepoSearchContract.RepoSearchViewModel() {
+class RepoSearchViewModelImp(
+    private val repoSearchRouter: RepoSearchContract.RepoSearchRouter,
+    private val repoRepository: RepoRepository
+) :
+    RepoSearchContract.RepoSearchViewModel(repoSearchRouter) {
 
     private val mutableSearchResult = MutableLiveData<List<Repo>?>()
     private val mutableSearchState = MutableLiveData<NetworkState>(NetworkState.Idle)
@@ -66,7 +69,7 @@ class RepoSearchViewModelImp(private val repoRepository: RepoRepository) :
     }
 
     override fun onRepoSelected(repo: Repo) {
-
+        repoSearchRouter.goToRepo(repo)
     }
 
     private fun setupSearchStateListener() {

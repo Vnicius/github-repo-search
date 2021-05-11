@@ -1,6 +1,7 @@
 package io.github.vnicius.githubreposearch.data.model
 
 import androidx.annotation.ColorInt
+import androidx.annotation.Keep
 import io.github.vnicius.githubreposearch.util.LanguageProvider
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
@@ -16,8 +17,9 @@ import kotlinx.serialization.encoding.Encoder
  * github: @vnicius
  * vinicius.matheus252@gmail.com
  */
+@Keep
 @Serializable
-data class Language(val name: String, @ColorInt val color: Int?)
+data class Language(val name: String, @ColorInt val color: Int?) : java.io.Serializable
 
 object LanguageProviderSerializer : KSerializer<Language> {
     override val descriptor: SerialDescriptor =

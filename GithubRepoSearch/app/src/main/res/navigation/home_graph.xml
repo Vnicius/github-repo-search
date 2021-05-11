@@ -7,5 +7,20 @@
     <fragment
         android:id="@+id/searchFragment"
         android:name="io.github.vnicius.githubreposearch.ui.reposearch.RepoSearchFragment"
-        android:label="RepoSearchFragment" />
+        android:label="RepoSearchFragment">
+        <action
+            android:id="@+id/action_searchFragment_to_repoDetailsFragment"
+            app:destination="@id/repoDetailsFragment" />
+    </fragment>
+
+
+    <dialog
+        android:id="@+id/repoDetailsFragment"
+        android:name="io.github.vnicius.githubreposearch.ui.repodetail.RepoDetailsFragment"
+        android:label="RepoDetailsFragment">
+        <argument
+            android:name="repo"
+            app:argType="io.github.vnicius.githubreposearch.data.model.Repo"
+            app:nullable="false" />
+    </dialog>
 </navigation>
