@@ -76,7 +76,7 @@ class RepoSearchViewModelImp(
         viewModelScope.launch {
             repoRepository.searchState.collect {
                 // Ignorar error por cancelamento do Job
-                if (it !is CancellationException) {
+                if (it !is NetworkState.Failed || it.exception !is CancellationException) {
                     mutableSearchState.postValue(it)
                 }
             }
