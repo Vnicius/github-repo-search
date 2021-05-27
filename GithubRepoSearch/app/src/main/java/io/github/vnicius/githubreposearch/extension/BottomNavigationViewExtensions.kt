@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import io.github.vnicius.githubreposearch.navigation.BottomNavigationConfig
+import io.github.vnicius.githubreposearch.ui.common.custombottomnavigation.CustomBottomNavigationView
 
 
 /**
@@ -15,6 +16,21 @@ import io.github.vnicius.githubreposearch.navigation.BottomNavigationConfig
  */
 
 fun BottomNavigationView.setupBottomNavigationConfig(
+    bottomNavigationConfig: BottomNavigationConfig,
+    fragmentManager: FragmentManager,
+    containerId: Int,
+    intent: Intent
+): LiveData<NavController> {
+    inflateMenu(bottomNavigationConfig.menuRes)
+    return setupWithNavController(
+        bottomNavigationConfig.graphs,
+        fragmentManager,
+        containerId,
+        intent
+    )
+}
+
+fun CustomBottomNavigationView.setupBottomNavigationConfig(
     bottomNavigationConfig: BottomNavigationConfig,
     fragmentManager: FragmentManager,
     containerId: Int,

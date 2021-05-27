@@ -30,4 +30,11 @@
         <attr name="icon" />
         <attr name="message" format="string" />
     </declare-styleable>
+
+    <declare-styleable name="CustomBottomNavigationView">
+        <attr name="itemIconTint" />
+        <attr name="itemTextColor" />
+        <attr name="isLabelVisible" format="boolean" />
+        <attr name="menu" />
+    </declare-styleable>
 </resources>

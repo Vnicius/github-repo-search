@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupBottomNav() {
-        viewBinding.bottomNavigation.setupBottomNavigationConfig(
+        viewBinding.customBottomNav.setupBottomNavigationConfig(
             bottomNavigationConfig = mainBottomNavigationConfig,
             fragmentManager = supportFragmentManager,
             containerId = R.id.nav_host_fragment,
