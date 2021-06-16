@@ -3,6 +3,7 @@ package io.github.vnicius.githubreposearch.ui.reposearch
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.paging.*
 import io.github.vnicius.githubreposearch.data.model.NetworkState
 import io.github.vnicius.githubreposearch.data.model.Repo
 import io.github.vnicius.githubreposearch.data.repository.repo.RepoRepository
@@ -11,6 +12,7 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
@@ -25,21 +27,29 @@ class RepoSearchViewModelImp(
 ) :
     RepoSearchContract.RepoSearchViewModel(repoSearchRouter) {
 
-    private val mutableSearchResult = MutableLiveData<List<Repo>?>()
+    private val mutableSearchResult = MutableLiveData<PagingData<Repo>?>()
     private val mutableSearchState = MutableLiveData<NetworkState>(NetworkState.Idle)
 
     private var currentSearchJob: Job? = null
     private var latestQuery: String = ""
 
-    override val searchResult: LiveData<List<Repo>?> = mutableSearchResult
+    override val searchResult: LiveData<PagingData<Repo>?> = mutableSearchResult
     override val searchState: LiveData<NetworkState> = mutableSearchState
 
     init {
         setupSearchStateListener()
     }
 
+    private suspend fun setupPagedSearch(pagingSourceFactory: () -> PagingSource<Int, Repo>) {
+        Pager(PagingConfig(PAGE_SIZE), pagingSourceFactory = pagingSourceFactory).flow.cachedIn(
+            viewModelScope
+        ).collectLatest {
+            mutableSearchResult.postValue(it)
+        }
+    }
+
     override fun search(query: String, isPriority: Boolean) {
-        if (query.isEquallyTo(latestQuery) && searchResult.value?.isNotEmpty() == true) return
+        if (query.isEquallyTo(latestQuery)) return
 
         currentSearchJob?.cancel()
         latestQuery = query
@@ -53,10 +63,8 @@ class RepoSearchViewModelImp(
                 delay(SEARCH_DELAY)
             }
 
-            repoRepository.search(query)?.let { result ->
-                if (query.isEquallyTo(latestQuery)) {
-                    mutableSearchResult.postValue(result)
-                }
+            if (query.isEquallyTo(latestQuery)) {
+                setupPagedSearch(repoRepository.searchPaged(query, PAGE_SIZE))
             }
         }
     }
@@ -85,5 +93,6 @@ class RepoSearchViewModelImp(
 
     companion object {
         private const val SEARCH_DELAY = 500L
+        private const val PAGE_SIZE = 10
     }
 }

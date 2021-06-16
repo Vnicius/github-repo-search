@@ -29,9 +29,10 @@ class GithubRepoService : RepoRemoteService {
         .build()
         .create(GithubRetrofitService::class.java)
 
-    override suspend fun search(query: String): RepoSearchResponse = withContext(Dispatchers.IO) {
-        val response = githubAPI.searchRepositories(query)
+    override suspend fun search(query: String, page: Int, pageSize: Int): RepoSearchResponse =
+        withContext(Dispatchers.IO) {
+            val response = githubAPI.searchRepositories(query, page = page, perPage = pageSize)
 
-        response
-    }
+            response
+        }
 }

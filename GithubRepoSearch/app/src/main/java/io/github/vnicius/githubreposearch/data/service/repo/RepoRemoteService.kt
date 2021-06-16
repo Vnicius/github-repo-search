@@ -18,5 +18,5 @@ interface RepoRemoteService {
      *
      * @param query - query da busca
      */
-    suspend fun search(query: String): RepoSearchResponse
+    suspend fun search(query: String, page: Int = 1, pageSize: Int = 10): RepoSearchResponse
 }
