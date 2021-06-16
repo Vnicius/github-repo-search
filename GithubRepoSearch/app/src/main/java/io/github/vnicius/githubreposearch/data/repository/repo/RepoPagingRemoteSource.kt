@@ -23,26 +23,21 @@ class RepoPagingRemoteSource(
             anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
         }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Repo> {
-        var data: List<Repo> = listOf()
-        var prevPage: Int? = null
-        var nextPage: Int? = null
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Repo> = try {
+        val prevPage: Int?
+        val nextPage: Int?
+        val page = params.key ?: 1
+        val response = repoRemoteService.search(query, page, pageSize)
 
-        try {
-            val page = params.key ?: 1
-            val response = repoRemoteService.search(query, page, pageSize)
-
-            prevPage = page.takeIf { it > 1 }?.let { it - 1 }
-            nextPage = if (response.items.isEmpty()) {
-                null
-            } else {
-                page + 1
-            }
-
-            data = response.items
-        } catch (e: Exception) {
+        prevPage = page.takeIf { it > 1 }?.let { it - 1 }
+        nextPage = if (response.items.isEmpty()) {
+            null
+        } else {
+            page + 1
         }
 
-        return LoadResult.Page(data = data, prevKey = prevPage, nextKey = nextPage)
+        LoadResult.Page(data = response.items, prevKey = prevPage, nextKey = nextPage)
+    } catch (e: Exception) {
+        LoadResult.Error(e)
     }
 }
