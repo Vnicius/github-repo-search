@@ -1,5 +1,7 @@
 package io.github.vnicius.githubreposearch.data.repository.repo
 
+import androidx.paging.PagingSource
+import io.github.vnicius.githubreposearch.data.model.Repo
 import io.github.vnicius.githubreposearch.data.model.RepoSearchResponse
 import io.github.vnicius.githubreposearch.data.service.repo.RepoRemoteService
 import kotlinx.coroutines.Dispatchers
@@ -16,4 +18,9 @@ class RepoRemoteDataSourceImp(private val repoRemoteService: RepoRemoteService) 
     override suspend fun search(query: String): RepoSearchResponse = withContext(Dispatchers.IO) {
         repoRemoteService.search(query)
     }
+
+    override suspend fun searchPaged(query: String, pageSize: Int): () -> PagingSource<Int, Repo> =
+        {
+            RepoPagingRemoteSource(query, pageSize, repoRemoteService)
+        }
 }

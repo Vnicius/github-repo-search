@@ -34,14 +34,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/search_bar_container">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/search_result_list"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/search_result_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:visibility="gone"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/view_repo_item"
-            tools:visibility="visible" />
+            tools:visibility="visible">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/search_result_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/view_repo_item" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <io.github.vnicius.githubreposearch.ui.common.SearchStateMessageView
             android:id="@+id/search_state_message"

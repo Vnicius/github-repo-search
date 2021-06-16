@@ -11,6 +11,8 @@ import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.paging.LoadState
+import androidx.paging.PagingData
 import io.github.vnicius.githubreposearch.R
 import io.github.vnicius.githubreposearch.data.model.NetworkState
 import io.github.vnicius.githubreposearch.data.model.Repo
@@ -19,9 +21,11 @@ import io.github.vnicius.githubreposearch.data.repository.repo.RepoRepositoryImp
 import io.github.vnicius.githubreposearch.data.service.repo.GithubRepoService
 import io.github.vnicius.githubreposearch.databinding.FragmentRepoSearchBinding
 import io.github.vnicius.githubreposearch.exception.NoResultsException
+import io.github.vnicius.githubreposearch.extension.doWhenResumed
 import io.github.vnicius.githubreposearch.extension.getDrawableFromAttr
 import io.github.vnicius.githubreposearch.extension.hideKeyboard
 import io.github.vnicius.githubreposearch.extension.setDivider
+import kotlinx.coroutines.flow.collect
 
 
 /**
@@ -65,6 +69,7 @@ class RepoSearchFragment : Fragment() {
         setupSearchBarButtonsListeners()
         setupSearchResultRecyclerView()
         setupSearchState()
+        setupPullRefresh()
     }
 
     override fun onResume() {
@@ -120,6 +125,12 @@ class RepoSearchFragment : Fragment() {
             adapter = RepoAdapter(::onRepoSelected)
             setDivider(R.drawable.list_item_divider)
         }
+
+        doWhenResumed {
+            repoAdapter?.loadStateFlow?.collect { loadState ->
+                setIsSwipeRefreshLoading(loadState.refresh is LoadState.Loading)
+            }
+        }
     }
 
     private fun setupSearchState() {
@@ -149,6 +160,12 @@ class RepoSearchFragment : Fragment() {
     private fun setupSearchContentFocus(childId: Int) {
         viewBinding.searchContentContainer.children.forEach { child ->
             child.isVisible = child.id == childId
+        }
+    }
+
+    private fun setupPullRefresh() {
+        viewBinding.searchResultContainer.setOnRefreshListener {
+            invalidateCurrentSearch()
         }
     }
 
@@ -189,15 +206,17 @@ class RepoSearchFragment : Fragment() {
         viewBinding.searchBar.text = null
     }
 
-    private fun handleSearchResult(repoSearchResult: List<Repo>?) {
+    private fun handleSearchResult(repoSearchResult: PagingData<Repo>?) {
         repoSearchResult?.let { repoSearchResult ->
             onSearchResultChanged(repoSearchResult)
             showSearchResult()
         }
     }
 
-    private fun onSearchResultChanged(repos: List<Repo>) {
-        repoAdapter?.submitList(repos)
+    private fun onSearchResultChanged(repos: PagingData<Repo>) {
+        doWhenResumed {
+            repoAdapter?.submitData(repos)
+        }
     }
 
     private fun showSearchError() {
@@ -221,7 +240,7 @@ class RepoSearchFragment : Fragment() {
     }
 
     private fun showSearchResult() {
-        setupSearchContentFocus(viewBinding.searchResultList.id)
+        setupSearchContentFocus(viewBinding.searchResultContainer.id)
     }
 
     private fun showSearchNoResult() {
@@ -233,13 +252,21 @@ class RepoSearchFragment : Fragment() {
     }
 
     private fun clearSearchResult() {
-        view?.post {
-            repoAdapter?.submitList(null)
+        doWhenResumed {
+            repoAdapter?.submitData(PagingData.empty())
         }
     }
 
     private fun onRepoSelected(repo: Repo) {
         closeKeyboard()
         viewModel.onRepoSelected(repo)
+    }
+
+    private fun invalidateCurrentSearch() {
+        repoAdapter?.refresh()
+    }
+
+    private fun setIsSwipeRefreshLoading(isLoading: Boolean) {
+        viewBinding.searchResultContainer.isRefreshing = isLoading
     }
 }

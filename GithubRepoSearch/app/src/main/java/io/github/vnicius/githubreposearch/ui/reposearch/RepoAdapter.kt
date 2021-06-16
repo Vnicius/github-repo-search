@@ -5,6 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.doOnAttach
 import androidx.core.view.isVisible
+import androidx.paging.PagingData
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -26,37 +28,16 @@ import io.github.vnicius.githubreposearch.util.ImageColorTransformation
  * vinicius.matheus252@gmail.com
  */
 class RepoAdapter(private val onRepoClicked: (repo: Repo) -> Unit) :
-    RecyclerView.Adapter<RepoAdapter.RepoViewHolder>() {
-
-    private val differCallback = object : DiffUtil.ItemCallback<Repo>() {
-        override fun areItemsTheSame(oldItem: Repo, newItem: Repo): Boolean =
-            oldItem.id == newItem.id
-
-        override fun areContentsTheSame(oldItem: Repo, newItem: Repo): Boolean =
-            oldItem.id == newItem.id && oldItem.starsCount == newItem.starsCount
-    }
-    private val asyncListDiffer = AsyncListDiffer(this, differCallback)
+    PagingDataAdapter<Repo, RepoAdapter.RepoViewHolder>(differCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepoViewHolder =
         RepoViewHolder(parent.inflate(R.layout.view_repo_item)) {
-            getItemAt(it)?.let(onRepoClicked)
+            getItem(it)?.let(onRepoClicked)
         }
 
     override fun onBindViewHolder(holder: RepoViewHolder, position: Int) {
-        getItemAt(position)?.let {
+        getItem(position)?.let {
             holder.bind(it)
-        }
-    }
-
-    override fun getItemCount(): Int = asyncListDiffer.currentList.size
-
-    private fun getItemAt(position: Int): Repo? = asyncListDiffer.currentList.get(position)
-
-    fun submitList(repos: List<Repo>?) {
-        asyncListDiffer.submitList(repos)
-
-        if (repos?.isEmpty() != false) {
-            notifyDataSetChanged()
         }
     }
 
@@ -104,6 +85,16 @@ class RepoAdapter(private val onRepoClicked: (repo: Repo) -> Unit) :
                 val textColor = color.takeIf { it != Color.BLACK } ?: Color.WHITE
                 viewBinding.ownerName.setTextColor(textColor)
             }
+        }
+    }
+
+    companion object {
+        private val differCallback = object : DiffUtil.ItemCallback<Repo>() {
+            override fun areItemsTheSame(oldItem: Repo, newItem: Repo): Boolean =
+                oldItem.id == newItem.id
+
+            override fun areContentsTheSame(oldItem: Repo, newItem: Repo): Boolean =
+                oldItem.id == newItem.id && oldItem.starsCount == newItem.starsCount
         }
     }
 }

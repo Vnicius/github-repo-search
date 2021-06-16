@@ -1,5 +1,7 @@
 package io.github.vnicius.githubreposearch.data.repository.repo
 
+import androidx.paging.PagingSource
+import io.github.vnicius.githubreposearch.data.model.Repo
 import io.github.vnicius.githubreposearch.data.model.RepoSearchResponse
 
 
@@ -19,4 +21,6 @@ interface RepoRemoteDataSource {
      * @param query - query da busca
      */
     suspend fun search(query: String): RepoSearchResponse
+
+    suspend fun searchPaged(query: String, pageSize: Int = 10): () -> PagingSource<Int, Repo>
 }

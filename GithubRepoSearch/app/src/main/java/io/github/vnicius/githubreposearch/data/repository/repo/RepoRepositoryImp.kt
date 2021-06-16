@@ -1,5 +1,6 @@
 package io.github.vnicius.githubreposearch.data.repository.repo
 
+import androidx.paging.PagingSource
 import io.github.vnicius.githubreposearch.data.model.NetworkState
 import io.github.vnicius.githubreposearch.data.model.Repo
 import io.github.vnicius.githubreposearch.exception.NoResultsException
@@ -38,5 +39,10 @@ class RepoRepositoryImp(private val repoRemoteDataSource: RepoRemoteDataSource) 
                 mutableSearchState.value = NetworkState.Failed(e)
                 null
             }
+        }
+
+    override suspend fun searchPaged(query: String, pageSize: Int): () -> PagingSource<Int, Repo> =
+        withContext(Dispatchers.IO) {
+            repoRemoteDataSource.searchPaged(query, pageSize)
         }
 }
